@@ -1,8 +1,7 @@
-package com.example.restapi.model.todo;
+package com.example.restapi.model;
 
 import java.time.LocalDate;
 
-import com.example.restapi.model.endUser.EndUser;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.annotation.Generated;
@@ -25,17 +24,17 @@ public class Todo {
   private Long date;
   @ManyToOne(fetch = FetchType.LAZY)
   @JsonIgnore
-  private EndUser endUser;
+  private User user;
 
   public Todo() {
   }
 
-  public Todo(String id, String description, Boolean done, Long date, EndUser endUser) {
+  public Todo(String id, String description, Boolean done, Long date, User user) {
     this.id = id;
     this.description = description;
     this.done = done;
     this.date = date;
-    this.endUser = endUser;
+    this.user = user;
   }
 
   public String getId() {
@@ -74,12 +73,12 @@ public class Todo {
     this.date = date;
   }
 
-  public EndUser getEndUser() {
-    return this.endUser;
+  public User getUser() {
+    return this.user;
   }
 
-  public void setEndUser(EndUser endUser) {
-    this.endUser = endUser;
+  public void setUser(User user) {
+    this.user = user;
   }
 
 }

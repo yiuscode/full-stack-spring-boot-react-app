@@ -1,12 +1,12 @@
-package com.example.restapi.model.endUser;
+package com.example.restapi.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(code = HttpStatus.NOT_FOUND)
-public class EndUserNotFoundException extends RuntimeException {
+public class UserNotFoundException extends RuntimeException {
   
-    public EndUserNotFoundException(String message) {
+    public UserNotFoundException(String message) {
       super(message);
     }
   

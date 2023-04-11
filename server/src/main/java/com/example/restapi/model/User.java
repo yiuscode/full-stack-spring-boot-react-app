@@ -1,34 +1,35 @@
-package com.example.restapi.model.endUser;
+package com.example.restapi.model;
 
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.example.restapi.model.todo.Todo;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
 
 @Entity
-public class EndUser {
+@Table(name = "my_user")
+public class User {
 
   @Id
   private String Id;
   @Size(min = 5, max = 100, message = "Size must between 5 - 100")
-  private String userName;
+  private String username;
   @Size(min = 8, max = 50, message = "Size must between 8 - 50")
   private String password;
-  @OneToMany(mappedBy = "endUser")
+  @OneToMany(mappedBy = "user")
   @JsonIgnore
   private List<Todo> todos;
 
-  public EndUser() {
+  public User() {
   }
 
-  public EndUser(String Id, String userName, String password, List<Todo> todos) {
+  public User(String Id, String username, String password, List<Todo> todos) {
     this.Id = Id;
-    this.userName = userName;
+    this.username = username;
     this.password = password;
     this.todos = todos;
   }
@@ -42,11 +43,11 @@ public class EndUser {
   }
 
   public String getUserName() {
-    return this.userName;
+    return this.username;
   }
 
-  public void setUserName(String userName) {
-    this.userName = userName;
+  public void setUserName(String username) {
+    this.username = username;
   }
 
   public String getPassword() {

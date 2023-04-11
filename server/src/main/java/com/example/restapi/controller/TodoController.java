@@ -1,4 +1,4 @@
-package com.example.restapi.model.todo;
+package com.example.restapi.controller;
 
 import java.util.List;
 
@@ -11,9 +11,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.restapi.model.endUser.EndUser;
-import com.example.restapi.model.endUser.EndUserNotFoundException;
-import com.example.restapi.model.endUser.EndUserRepository;
+import com.example.restapi.exception.TodoNotFoundException;
+import com.example.restapi.exception.UserNotFoundException;
+import com.example.restapi.model.Todo;
+import com.example.restapi.model.User;
+import com.example.restapi.repository.TodoRepository;
+import com.example.restapi.repository.UserRepository;
 
 import jakarta.validation.Valid;
 
@@ -21,27 +24,27 @@ import jakarta.validation.Valid;
 public class TodoController {
 
   private TodoRepository todoRepository;
-  private EndUserRepository endUserRepository;
+  private UserRepository userRepository;
 
-  public TodoController(TodoRepository todoRepository, EndUserRepository endUserRepository) {
+  public TodoController(TodoRepository todoRepository, UserRepository userRepository) {
     this.todoRepository = todoRepository;
-    this.endUserRepository = endUserRepository;
+    this.userRepository = userRepository;
   }
 
   @GetMapping("/user/{userId}/todos")
   public List<Todo> getAllTodosByUser(@PathVariable String userId) {
-    EndUser endUser = endUserRepository.findById(userId).orElse(null);
-    if (endUser == null) {
-      throw new EndUserNotFoundException(String.format("User %s not found.", userId));
+    User user = userRepository.findById(userId).orElse(null);
+    if (user == null) {
+      throw new UserNotFoundException(String.format("User %s not found.", userId));
     }
-    return endUser.getTodos();
+    return user.getTodos();
   }
 
   @GetMapping("/user/{userId}/todos/{todoId}")
   public Todo getTodoByUser(@PathVariable String userId, @PathVariable String todoId) {
-    EndUser endUser = endUserRepository.findById(userId).orElse(null);
-    if (endUser == null) {
-      throw new EndUserNotFoundException(String.format("User %s not found.", userId));
+    User user = userRepository.findById(userId).orElse(null);
+    if (user == null) {
+      throw new UserNotFoundException(String.format("User %s not found.", userId));
     }
     Todo todo = todoRepository.findById(todoId).orElse(null);
     if (todo == null) {
@@ -52,9 +55,9 @@ public class TodoController {
 
   @DeleteMapping("/user/{userId}/todos/{todoId}")
   public ResponseEntity<Void> deleteTodo(@PathVariable String userId, @PathVariable String todoId) {
-    EndUser endUser = endUserRepository.findById(userId).orElse(null);
-    if (endUser == null) {
-      throw new EndUserNotFoundException(String.format("User %s not found.", userId));
+    User user = userRepository.findById(userId).orElse(null);
+    if (user == null) {
+      throw new UserNotFoundException(String.format("User %s not found.", userId));
     }
     Todo todo = todoRepository.findById(todoId).orElse(null);
     if (todo == null) {
@@ -66,26 +69,26 @@ public class TodoController {
 
   @PutMapping("/user/{userId}/todos/{todoId}")
   public ResponseEntity<Todo> updateTodo(@PathVariable String userId, @RequestBody Todo todo) {
-    EndUser endUser = endUserRepository.findById(userId).orElse(null);
-    if (endUser == null) {
-      throw new EndUserNotFoundException(String.format("User %s not found.", userId));
+    User user = userRepository.findById(userId).orElse(null);
+    if (user == null) {
+      throw new UserNotFoundException(String.format("User %s not found.", userId));
     }
     Todo currentTodo = todoRepository.findById(todo.getId()).orElse(null);
     if (currentTodo == null) {
       throw new TodoNotFoundException(String.format("Todo %s not found.", userId));
     }
-    todo.setEndUser(endUser);
+    todo.setUser(user);
     todoRepository.save(todo);
     return ResponseEntity.ok(todo);
   }
 
   @PostMapping("/user/{userId}/todos")
   public ResponseEntity<Todo> createTodo(@PathVariable String userId, @RequestBody Todo todo) {
-    EndUser endUser = endUserRepository.findById(userId).orElse(null);
-    if (endUser == null) {
-      throw new EndUserNotFoundException(String.format("User %s not found.", userId));
+    User user = userRepository.findById(userId).orElse(null);
+    if (user == null) {
+      throw new UserNotFoundException(String.format("User %s not found.", userId));
     }
-    todo.setEndUser(endUser);
+    todo.setUser(user);
     todoRepository.save(todo);
     return ResponseEntity.ok(todo);
   }

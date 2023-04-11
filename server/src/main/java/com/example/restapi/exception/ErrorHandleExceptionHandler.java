@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.example.restapi.model.endUser.EndUserNotFoundException;
-import com.example.restapi.model.todo.TodoNotFoundException;
-
 @ControllerAdvice
 public class ErrorHandleExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -25,8 +22,8 @@ public class ErrorHandleExceptionHandler extends ResponseEntityExceptionHandler 
     return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
-  @ExceptionHandler(EndUserNotFoundException.class)
-  public final ResponseEntity<ErrorDetails> handleEndUserNotFoundException(Exception ex, WebRequest request)
+  @ExceptionHandler(UserNotFoundException.class)
+  public final ResponseEntity<ErrorDetails> handleUserNotFoundException(Exception ex, WebRequest request)
       throws Exception {
     ErrorDetails errorDetails = new ErrorDetails(LocalDate.now(), ex.getMessage(), request.getDescription(false),
         HttpStatus.NOT_FOUND.value());
