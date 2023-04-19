@@ -22,7 +22,12 @@ const useDeleteTodoList = (): UseDeleteTodoListResponse => {
 
   const handleDelete = async (userId: string, todoId: number) => {
     try {
-      const deleteResponse = await axios.delete<DeleteTodoListResponse>(SERVER_END_POINT + `/user/${userId}/todos/${todoId}`);
+      const config = {
+        headers: {
+          auth: 'Basic dXNlcjoxMjM0',
+        },
+      };
+      const deleteResponse = await axios.delete<DeleteTodoListResponse>(SERVER_END_POINT + `/user/${userId}/todos/${todoId}`, config);
       setResponse(deleteResponse.data);
       displaySnackbar('Successfully deleted todo list.');
     } catch (error) {

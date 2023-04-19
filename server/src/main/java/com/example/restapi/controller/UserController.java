@@ -22,7 +22,7 @@ public class UserController {
         .orElseThrow(() -> new RuntimeException("User not found"));
 
     if (user.getPassword().equals(loginRequest.getPassword())) {
-      return ResponseEntity.ok("Login successful");
+      return ResponseEntity.ok(user);
     } else {
       return ResponseEntity.status(401).body("Invalid credentials");
     }

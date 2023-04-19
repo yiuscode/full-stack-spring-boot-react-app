@@ -1,11 +1,14 @@
 import React from 'react';
 import { User } from '../../types';
 import { Navigate } from 'react-router-dom';
+import { useSnackbar } from '../snakebar';
+import axios from 'axios';
+import { SERVER_END_POINT } from '../../constant';
 
 interface UserContextValue {
   user: User | null;
   isLoggedIn: boolean;
-  login: (user: User) => void;
+  login: (username: string, password: string) => Promise<boolean>;
   logout: () => void;
 }
 
@@ -20,7 +23,7 @@ interface RequireAuthProps {
 const defaultUserContextValue = {
   user: null,
   isLoggedIn: false,
-  login: () => {},
+  login: async (): Promise<boolean> => false,
   logout: () => {},
 };
 
@@ -40,10 +43,25 @@ const RequireAuth = (props: RequireAuthProps) => {
 const UserProvider = (props: UserProviderProps) => {
   const [user, setUser] = React.useState<User | null>(null);
   const [isLoggedIn, setIsLoggedIn] = React.useState<boolean>(false);
+  const { displaySnackbar } = useSnackbar();
 
-  const login = (userData: User) => {
-    setUser(userData);
-    setIsLoggedIn(true);
+  const login = async (username: string, password: string) => {
+    const config = {
+      auth: {
+        username: `user`,
+        password: `1234`,
+      },
+    };
+    try {
+      const response = await axios.post(`${SERVER_END_POINT}/login`, { username, password });
+      setUser(response.data);
+      console.log('response.data: ', response.data);
+      setIsLoggedIn(true);
+      return true;
+    } catch (error) {
+      displaySnackbar('Error logging in ' + (error as any).message, 'error');
+    }
+    return false;
   };
 
   const logout = () => {

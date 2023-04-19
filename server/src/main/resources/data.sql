@@ -1,7 +1,7 @@
 insert into
   my_user(id, username, password)
 values
-  ('1', 'jackwong@gmail.com', '1234567890');
+  ('1', 'jackwong', '1234');
 
 insert into
   todo(ID, DATE, DESCRIPTION, DONE, USER_ID)

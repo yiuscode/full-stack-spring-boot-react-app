@@ -22,7 +22,12 @@ const useCreateTodo = (): UseCreateTodoResponse => {
 
   const handleCreate = async (userId: string, todo: Todo) => {
     try {
-      const createResponse = await axios.post<CreateTodoResponse>(`${SERVER_END_POINT}/user/${userId}/todos`, todo);
+      const config = {
+        headers: {
+          auth: 'Basic dXNlcjoxMjM0',
+        },
+      };
+      const createResponse = await axios.post<CreateTodoResponse>(`${SERVER_END_POINT}/user/${userId}/todos`, todo, config);
       setResponse(createResponse.data);
       displaySnackbar('Successfully created todo list.');
     } catch (error) {

@@ -2,27 +2,21 @@ import { Box, Typography, TextField, Button } from '@mui/material';
 import React from 'react';
 import { Container } from '../container';
 import { useNavigate } from 'react-router-dom';
-import { dummyUser } from '../../data';
 import { useAuth } from '../../context/security';
-import { useSnackbar } from '../../context/snakebar';
 
 export const Login: React.FC = () => {
   const [userName, setUserName] = React.useState<string>('');
   const [password, setPassword] = React.useState<string>('');
   const navigate = useNavigate();
   const { login } = useAuth();
-  const { displaySnackbar } = useSnackbar();
 
   const handleSubmit = (event: React.ChangeEvent<any>) => {
     event.preventDefault();
-    if (userName === 'user' && password === '') {
-      // dummy user
-      login(dummyUser);
-      displaySnackbar('Login success');
-      navigate('/app');
-    } else {
-      displaySnackbar('Failed to login', 'error');
-    }
+    login(userName, password).then((result) => {
+      if (result === true) {
+        setTimeout(() => navigate('/app'), 300);
+      }
+    });
   };
 
   const handleUserNameChange = (event: React.ChangeEvent<any>) => {

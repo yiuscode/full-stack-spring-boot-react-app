@@ -26,8 +26,9 @@ public class BasicAuthenticationSecurityConfiguration {
 		return http
                 .authorizeHttpRequests(
                         auth -> auth
-                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                                .anyRequest().authenticated())
+                                .requestMatchers("/user/**").authenticated()
+                                .requestMatchers("/login").permitAll()
+																)
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -13,14 +13,11 @@ const useGetTodos = () => {
   const fetchTodos = React.useCallback(async () => {
     try {
       const config = {
-        auth: {
-          username: `user`,
-          password: `1234`,
+        headers: {
+          auth: 'Basic dXNlcjoxMjM0',
         },
       };
-      console.log('config: ', config);
-
-      const response = await axios.get<Todo[]>(SERVER_END_POINT + `/user/${user?.id ?? ''}/todos`, config);
+      const response = await axios.get<Todo[]>(SERVER_END_POINT + `/user/${user?.id ?? ''}/todos`);
       const newList = [...response.data];
       setTodos(newList);
     } catch (error) {

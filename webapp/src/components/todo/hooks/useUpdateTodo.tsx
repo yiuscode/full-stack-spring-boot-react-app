@@ -23,7 +23,12 @@ const useUpdateTodo = (): UseUpdateTodoListResponse => {
 
   const handleUpdate = async (userId: string, todo: Todo) => {
     try {
-      const updateResponse = await axios.put<UpdateTodoListResponse>(SERVER_END_POINT + `/user/${userId}/todos/${todo.id}`, todo);
+      const config = {
+        headers: {
+          auth: 'Basic dXNlcjoxMjM0',
+        },
+      };
+      const updateResponse = await axios.put<UpdateTodoListResponse>(SERVER_END_POINT + `/user/${userId}/todos/${todo.id}`, todo, config);
       setResponse(updateResponse.data);
       displaySnackbar('Successfully updated todo list.');
     } catch (error) {

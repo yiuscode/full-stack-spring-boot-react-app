@@ -19,6 +19,7 @@ public class User {
   @Size(min = 5, max = 100, message = "Size must between 5 - 100")
   private String username;
   @Size(min = 8, max = 50, message = "Size must between 8 - 50")
+  @JsonIgnore
   private String password;
   @OneToMany(mappedBy = "user")
   @JsonIgnore
@@ -42,11 +43,11 @@ public class User {
     this.Id = Id;
   }
 
-  public String getUserName() {
+  public String getUsername() {
     return this.username;
   }
 
-  public void setUserName(String username) {
+  public void setUsername(String username) {
     this.username = username;
   }
 

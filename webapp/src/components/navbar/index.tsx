@@ -25,7 +25,7 @@ export const Navbar = () => {
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'row' }}>
             <Typography variant="h5" component="div">
-              {user ? `${user.name}` : ''}
+              {user ? `${user.username}` : ''}
             </Typography>
             <Button color="inherit" onClick={handleLoginLogout}>
               <Tooltip title={isLoggedIn ? 'Logout' : ''}>{isLoggedIn ? <Logout /> : <></>}</Tooltip>
